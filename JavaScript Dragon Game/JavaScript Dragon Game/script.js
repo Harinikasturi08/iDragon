@@ -1,3 +1,9 @@
+let score = 0;
+let highScore = localStorage.getItem("highScore") || 0;
+document.addEventListener("DOMContentLoaded", () => {
+    document.getElementById('highScoreCont').innerText = "High Score: " + highScore;
+});
+
 score = 0;
 cross = true;
 
@@ -38,8 +44,16 @@ setInterval(() => {
     offsetY = Math.abs(dy - oy);
     // console.log(offsetX, offsetY)
     if (offsetX < 103 && offsetY < 103) {
-        gameOver.innerHTML = "Game Over - Reload to Play Again"
-        obstacle.classList.remove('obstacleAni')
+        gameOver.innerHTML = "Game Over";
+obstacle.classList.remove('obstacleAni');
+document.getElementById("restartBtn").style.display = "block";
+
+if (score > highScore) {
+    highScore = score;
+    localStorage.setItem("highScore", highScore);
+    document.getElementById('highScoreCont').innerText = "High Score: " + highScore;
+}
+
        
     }
     else if (offsetX < 145 && cross) {
@@ -63,3 +77,14 @@ setInterval(() => {
 function updateScore(score) {
     scoreCont.innerHTML = "Your Score: " + score
 }
+
+function restartGame() {
+    score = 0;
+    updateScore(score);
+    document.querySelector(".obstacle").classList.add("obstacleAni");
+    document.querySelector(".dino").style.left = "52px";
+    document.querySelector(".gameOver").innerHTML = "Welcome to iDragon Adventures";
+    document.getElementById("restartBtn").style.display = "none";
+}
+
+
